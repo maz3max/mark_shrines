@@ -160,9 +160,6 @@ else:
     sys.exit(-1)
 
 
-# img_rgb = cv.imread('cropped.jpg')
-
-
 # Step 1: find tower markers in screenshot
 img_gray = cv.cvtColor(img_rgb, cv.COLOR_BGR2GRAY)
 template = cv.imread('tower-template.png', 0)
