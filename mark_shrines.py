@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 import cv2 as cv
 import numpy as np
+import scipy
+import scipy.spatial
 
 from pycpd import AffineRegistration
 
@@ -185,6 +187,22 @@ X = np.array(list(zip(loc[0], loc[1])))
 Y = np.array([t[0] for t in towers])
 # apply default transform (to have a known good starting point)
 Y = transformY(Y)
+
+def filterX(_X, radius=h):
+    # create cKD-Tree data structure (to enable quick spatial queries)
+    tree = scipy.spatial.cKDTree(X)
+    # find all points that are within the radius of each others
+    pairs = tree.query_ball_tree(tree, radius)
+    # filter those point pairs (more like tuples)
+    result = set()
+    for p in pairs:
+        # take the location where the template fit best
+        result.add(max(p, key=lambda i:res[X[i][0]][X[i][1]]))
+    return [x for i,x in enumerate(X) if i in result]
+
+# filter out duplicate matches of the template at nearly identical locations
+X = filterX(X)
+    
 
 # run CPD algorithm to register point clouds and find precise transform
 reg = AffineRegistration(**{'X': X, 'Y': Y})
