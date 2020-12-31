@@ -198,10 +198,10 @@ def filterX(_X, radius=h):
     for p in pairs:
         # take the location where the template fit best
         result.add(max(p, key=lambda i:res[X[i][0]][X[i][1]]))
-    return [x for i,x in enumerate(X) if i in result]
+    return np.array([x for i,x in enumerate(X) if i in result])
 
 # filter out duplicate matches of the template at nearly identical locations
-# X = filterX(X)
+X = filterX(X)
     
 
 # run CPD algorithm to register point clouds and find precise transform
