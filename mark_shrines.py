@@ -201,7 +201,7 @@ def filterX(_X, radius=h):
     return [x for i,x in enumerate(X) if i in result]
 
 # filter out duplicate matches of the template at nearly identical locations
-X = filterX(X)
+# X = filterX(X)
     
 
 # run CPD algorithm to register point clouds and find precise transform
